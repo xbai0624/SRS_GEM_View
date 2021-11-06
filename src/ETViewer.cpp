@@ -44,6 +44,7 @@ ETViewer::ETViewer(QWidget *parent) : QWidget(parent)
     // turn on/off et
     QHBoxLayout *h_layout = new QHBoxLayout();
     b_turn_on_et = new QPushButton("Turn On ET", this);
+    b_turn_on_et -> setEnabled(false);
     b_turn_off_et = new QPushButton("Turn Off ET", this);
     b_turn_off_et -> setEnabled(false); // disable turn off, coda needs et running
     // a et status indicator
@@ -51,8 +52,8 @@ ETViewer::ETViewer(QWidget *parent) : QWidget(parent)
     l_indicator = new QLabel("", this);
     l_indicator -> setPixmap(*p_indicator);
     l_indicator -> setScaledContents(true);
-    l_indicator -> setFixedWidth(20);
-    l_indicator -> setFixedHeight(20);
+    l_indicator -> setFixedWidth(25);
+    l_indicator -> setFixedHeight(25);
     l_indicator -> setEnabled(true);
     QLabel *status_et = new QLabel("ET live:", this);
 
@@ -97,6 +98,7 @@ void ETViewer::OfflineButtonSelected()
     le_port -> setEnabled(false);
     le_time_interval -> setEnabled(false);
     le_memory_file -> setEnabled(false);
+    b_turn_on_et -> setEnabled(false);
 
     is_offline_mode = true;
 }
@@ -108,6 +110,7 @@ void ETViewer::OnlineButtonSelected()
     le_port -> setEnabled(true);
     le_time_interval -> setEnabled(true);
     le_memory_file -> setEnabled(true);
+    b_turn_on_et -> setEnabled(true);
 
     is_offline_mode = false;
 }
@@ -121,7 +124,7 @@ void ETViewer::ConnectActions()
 
     // timer
     connect(timer, SIGNAL(timeout()), this, SLOT(TimerEvent()));
-    timer -> start(500);
+    timer -> start(800);
 
     connect(b_turn_on_et, SIGNAL(pressed()), this, SLOT(TurnOnET()));
     connect(b_turn_off_et, SIGNAL(pressed()), this, SLOT(TurnOffET()));
