@@ -187,7 +187,7 @@ std::unordered_map<APVAddress, std::vector<int>> ETViewer::GetOneETEvent()
         return res;
     }
 
-    et_channel -> GetOneLiveEvent(pBuf, fBufLen);
+    et_channel -> GetOneLiveEvent(&pBuf, fBufLen);
 
     if(pBuf == nullptr)
         return res;

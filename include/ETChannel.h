@@ -15,7 +15,7 @@ public:
     void Init();
     void KillET();
 
-    void GetOneLiveEvent(uint32_t *pBuf, uint32_t &fBufLen);
+    void GetOneLiveEvent(uint32_t **pBuf, uint32_t &fBufLen);
 
 private:
     ETViewer *et_viewer = nullptr;
