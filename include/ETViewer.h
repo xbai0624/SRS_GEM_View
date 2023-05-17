@@ -91,6 +91,8 @@ private:
     QLineEdit *le_time_interval;
     QLineEdit *le_memory_file;
 
+    // a buffer for live event buffer
+    uint32_t *pBuf;
     // et channel
     ETChannel *et_channel = nullptr;
     // parse event

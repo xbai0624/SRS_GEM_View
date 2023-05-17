@@ -9,6 +9,8 @@
 
 ETViewer::ETViewer(QWidget *parent) : QWidget(parent)
 {
+    pBuf = new uint32_t[1]; // initialize event buffer
+
     layout = new QVBoxLayout(this);
 
     ExclusiveGroup();
@@ -180,7 +182,7 @@ std::unordered_map<APVAddress, std::vector<int>> ETViewer::GetOneETEvent()
 {
     std::unordered_map<APVAddress, std::vector<int>> res;
 
-    uint32_t *pBuf = new uint32_t[1];
+    //uint32_t *pBuf = new uint32_t[1];
     uint32_t fBufLen = 0;
 
     if(et_channel == nullptr)
