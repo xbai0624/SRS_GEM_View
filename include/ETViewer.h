@@ -64,7 +64,7 @@ private:
     // default values
     std::string host_ip_address = "127.0.0.1";
     std::string host_port = "23911";
-    std::string memory_mapped_file = "/tmp/et_test_expid_ER2";
+    std::string memory_mapped_file = "/tmp/et_fermitest_ER1";
     int poll_time_interval = 2; // seconds
 
     // layout

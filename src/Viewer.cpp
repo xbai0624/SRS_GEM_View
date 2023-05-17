@@ -474,8 +474,8 @@ void Viewer::OpenFile()
     QString filename = QFileDialog::getOpenFileName(
             this,
             "Open Document",
-            QDir::currentPath(),
-            //"/home/daq/apps/coda/data",
+            //QDir::currentPath(),
+            "/home/daq/coda/data",
             "All files (*.*) ;; evio files (*.evio)");
 
     fFile = filename.toStdString();

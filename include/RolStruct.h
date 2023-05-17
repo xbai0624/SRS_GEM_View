@@ -22,7 +22,7 @@ enum class EventType
 enum class Bank_TagID 
 {
     FADC    = 3,
-    SRS     = 17, // SRS starting bank ID, b/c in SRS setup, each FEC occupies one bank
+    SRS     = 5, // SRS starting bank ID, b/c in SRS setup, each FEC occupies one bank
     TDC     = 6,
     MPD_VME = 10,
     MPD_SSP = 10

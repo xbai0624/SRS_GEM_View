@@ -29,7 +29,7 @@ ETViewer::ETViewer(QWidget *parent) : QWidget(parent)
     le_time_interval -> setEnabled(false);
     QLabel *l_mem = new QLabel("ET memory File:", this);
     le_memory_file = new QLineEdit(this);
-    le_memory_file -> setText("/tmp/et_test_expid_ER2");
+    le_memory_file -> setText("/tmp/et_fermitest_ER1");
     le_memory_file -> setEnabled(false);
 
     grid_layout -> addWidget(l_ip, 0, 0);
@@ -143,8 +143,10 @@ void ETViewer::TimerEvent()
 
 void ETViewer::TurnOnET()
 {
-    if(et_is_alive)
+    if(et_is_alive) {
+	    std::cout<<"ET is already alive. Nothing is needed."<<std::endl;
         return;
+    }
 
     et_is_alive = true;
 
@@ -189,8 +191,13 @@ std::unordered_map<APVAddress, std::vector<int>> ETViewer::GetOneETEvent()
 
     et_channel -> GetOneLiveEvent(&pBuf, fBufLen);
 
-    if(pBuf == nullptr)
+    if(pBuf == nullptr || fBufLen == 0)
         return res;
+
+    if(event_parser == nullptr) {
+	    std::cout<<"event parser is not initilized..."<<std::endl;
+	    return res;
+    }
 
     event_parser -> ParseEvent(pBuf, fBufLen);
     res = raw_decoder -> GetAPV();

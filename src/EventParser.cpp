@@ -31,6 +31,13 @@ void EventParser::ParseEvent(const uint32_t *pBuf, uint32_t fBufLen)
     // clear last event
     ClearForNextEvent();
 
+    if(!pBuf || fBufLen < 2) {
+	    std::cout<<"Warning: EventParser::ParseEvent(pBuf, fBufLen) "
+		    <<" : event length < 2, no valid header information "
+		    <<std::endl;
+	    return;
+    }
+
     // found a correct event type using bank header, which means
     // that this buffer is a bank
     EventBankHeader event_header(pBuf[0], pBuf[1]);
@@ -73,6 +80,11 @@ void EventParser::ParseEvent(const uint32_t *pBuf, uint32_t fBufLen)
 
 void EventParser::ParseBank(const uint32_t *pBuf, uint32_t fBufLen)
 {
+    if(fBufLen < 2){
+	std::cout<<"Warning: Bank Header length < 2 32-bit words."<<std::endl;
+	return;
+    }
+
     EventBankHeader event_header(pBuf[0], pBuf[1]);
     auto type = event_header.type;
     std::vector<int> vTagTrack(1, event_header.tag);

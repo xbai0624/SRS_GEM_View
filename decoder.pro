@@ -6,9 +6,7 @@ TEMPLATE = app
 TARGET = gem_view_srs
 
 QT += widgets gui core 
-
-QMAKE_CXXFLAGS = -std=c++11
-
+CONFIG += c++14
 
 # self headers
 INCLUDEPATH += . ./include
