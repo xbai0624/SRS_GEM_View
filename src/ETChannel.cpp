@@ -74,7 +74,7 @@ void ETChannel::Init()
     et_system_setdebug(id, ET_DEBUG_INFO);
 }
 
-void ETChannel::GetOneLiveEvent(uint32_t **pBuf, uint32_t &fBufLen)
+void ETChannel::GetOneLiveEvent(uint32_t **pBuf, uint32_t &fBufLen, std::vector<uint32_t> &vBuf)
 {
     if(!et_alive(id))
         return;
@@ -107,7 +107,15 @@ void ETChannel::GetOneLiveEvent(uint32_t **pBuf, uint32_t &fBufLen)
     // need to shift by 8 uint32_t words, to skip coda event header, decoder won't handle this header
     //parser -> ParseEvent((uint32_t*)(*tmp) + 8, event_length/4);
     *pBuf = (uint32_t*)(*event_buf) + 8;
+    uint32_t* v_buf = (uint32_t*)(*event_buf) + 8;
     fBufLen = event_length / 4;
+
+    // debug
+    vBuf.clear();
+    for(uint32_t i=0; i<fBufLen; i++)
+    {
+	vBuf.push_back(v_buf[i]);
+    }
 
     // put event back
     et_event_put(id, att_id, pe);

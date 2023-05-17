@@ -65,7 +65,7 @@ private:
     std::string host_ip_address = "127.0.0.1";
     std::string host_port = "23911";
     std::string memory_mapped_file = "/tmp/et_fermitest_ER1";
-    int poll_time_interval = 2; // seconds
+    int poll_time_interval = 1; // seconds
 
     // layout
     QVBoxLayout *layout;
@@ -91,8 +91,6 @@ private:
     QLineEdit *le_time_interval;
     QLineEdit *le_memory_file;
 
-    // a buffer for live event buffer
-    uint32_t *pBuf;
     // et channel
     ETChannel *et_channel = nullptr;
     // parse event

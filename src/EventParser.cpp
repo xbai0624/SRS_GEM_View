@@ -18,6 +18,25 @@ EventParser::~EventParser()
 
 ////////////////////////////////////////////////////////////////
 // parse event
+// an interface for dealing with vector event data
+
+void EventParser::ParseEvent(const std::vector<uint32_t> &vBuf)
+{
+    uint32_t s = vBuf.size();
+    uint32_t *pbuf = new uint32_t[s];
+
+    // copy to buffer
+    for(uint32_t i=0; i<s; i++)
+	    pbuf[i] = vBuf[i];
+
+    ParseEvent(pbuf, s);
+
+    delete[] pbuf;
+}
+
+
+////////////////////////////////////////////////////////////////
+// parse event
 //
 // evio events are organized in a hierarchy structure
 // Containter Banks contain other banks, leaf banks 

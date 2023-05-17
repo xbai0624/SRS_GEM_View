@@ -9,8 +9,6 @@
 
 ETViewer::ETViewer(QWidget *parent) : QWidget(parent)
 {
-    pBuf = new uint32_t[1]; // initialize event buffer
-
     layout = new QVBoxLayout(this);
 
     ExclusiveGroup();
@@ -182,8 +180,9 @@ std::unordered_map<APVAddress, std::vector<int>> ETViewer::GetOneETEvent()
 {
     std::unordered_map<APVAddress, std::vector<int>> res;
 
-    //uint32_t *pBuf = new uint32_t[1];
+    uint32_t *pBuf = 0;
     uint32_t fBufLen = 0;
+    std::vector<uint32_t> vBuf;
 
     if(et_channel == nullptr)
     {
@@ -191,7 +190,7 @@ std::unordered_map<APVAddress, std::vector<int>> ETViewer::GetOneETEvent()
         return res;
     }
 
-    et_channel -> GetOneLiveEvent(&pBuf, fBufLen);
+    et_channel -> GetOneLiveEvent(&pBuf, fBufLen, vBuf);
 
     if(pBuf == nullptr || fBufLen == 0)
         return res;
@@ -201,7 +200,8 @@ std::unordered_map<APVAddress, std::vector<int>> ETViewer::GetOneETEvent()
 	    return res;
     }
 
-    event_parser -> ParseEvent(pBuf, fBufLen);
+    event_parser -> ParseEvent(vBuf);
+    //event_parser -> ParseEvent(pBuf, fBufLen);
     res = raw_decoder -> GetAPV();
 
     return res;

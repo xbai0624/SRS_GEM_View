@@ -19,6 +19,7 @@ public:
     EventParser();
     ~EventParser();
 
+    void ParseEvent(const std::vector<uint32_t> &vBuf);
     void ParseEvent(const uint32_t *pBuf, uint32_t fBufLen);
 
     void ParseBank(const uint32_t *pBuf, uint32_t fBufLen);

@@ -3,6 +3,7 @@
 
 #include "ETViewer.h"
 #include "et.h"
+#include <vector>
 
 class ETChannel
 {
@@ -15,7 +16,7 @@ public:
     void Init();
     void KillET();
 
-    void GetOneLiveEvent(uint32_t **pBuf, uint32_t &fBufLen);
+    void GetOneLiveEvent(uint32_t **pBuf, uint32_t &fBufLen, std::vector<uint32_t> &vBuf);
 
 private:
     ETViewer *et_viewer = nullptr;
