@@ -137,6 +137,8 @@ void Viewer::InitRightView()
     pRightLayout -> addWidget(pRightCtrlInterface);
     pRightLayout -> addWidget(pRightCanvas);
     pRightLayout -> addWidget(pLogBox);
+
+    minimum_qt_unit_height(pRightCtrlInterface, pRightCanvas, pLogBox);
 }
 
 
@@ -207,6 +209,11 @@ void Viewer::InitCtrlInterface()
     _layout4 -> addWidget(le_split, 1, 1);
     _layout4 -> addWidget(l4, 2, 0);
     _layout4 -> addWidget(b4, 2, 1);
+
+    minimum_qt_unit_height(l1, file_indicator, bOpenFile, l2,  event_number,
+		    l_num, le_num, l_path, le_path, l3, b,
+		    l_replay, le_replay,
+		    l_replay, le_replay, l4, b4);
 
     // add to overall layout
     layout -> addLayout(_layout1);

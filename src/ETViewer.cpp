@@ -62,6 +62,9 @@ ETViewer::ETViewer(QWidget *parent) : QWidget(parent)
     h_layout -> addWidget(b_turn_on_et);
     h_layout -> addWidget(b_turn_off_et);
 
+    minimum_qt_unit_height(l_ip, le_ip, l_port, le_port, l_time, le_time_interval, l_mem,
+		    le_memory_file, status_et, l_indicator, b_turn_on_et, b_turn_off_et);
+
     // a timer
     timer = new QTimer(this);
 
@@ -88,6 +91,8 @@ QGroupBox* ETViewer::ExclusiveGroup()
     hbox -> addWidget(b_offline_mode);
     hbox -> addWidget(b_online_mode);
     hbox -> addStretch(1);
+
+    minimum_qt_unit_height(b_offline_mode, b_online_mode);
 
     return groupBox;
 }

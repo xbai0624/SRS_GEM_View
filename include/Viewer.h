@@ -119,6 +119,17 @@ private:
     int event_number_checked = 0;
     size_t max_cache_events = 11;
     std::deque<std::map<APVAddress, std::vector<int>>> event_cache;
+
+public:
+    template<typename T> void minimum_qt_unit_height(T b)
+    {
+        b -> setMinimumHeight(10);
+    }
+    template<typename T, typename... Args> void minimum_qt_unit_height(T b, Args... args) {
+        minimum_qt_unit_height(b);
+        minimum_qt_unit_height(args...);
+    }
+
 };
 
 #endif
