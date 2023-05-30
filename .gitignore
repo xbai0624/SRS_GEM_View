@@ -1,3 +1,4 @@
 obj/
 moc/
+database/*.root
 gem_view_srs

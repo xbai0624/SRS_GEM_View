@@ -47,7 +47,7 @@ void Viewer::InitGui()
     InitRightView();
     InitLeftView();
 
-    setWindowTitle("GEM Data Viewer");
+    setWindowTitle("Live Data Viewer");
 }
 
 ////////////////////////////////////////////////////////////////
@@ -536,7 +536,7 @@ void Viewer::GeneratePedestal_obsolete()
 {
     QMessageBox::information(
             this,
-            tr("GEM Data Viewer"),
+            tr("Live Data Viewer"),
             tr("Generating Pedestals usually take ~30 seconds. \
                 \nPress OK to start...") );
 
