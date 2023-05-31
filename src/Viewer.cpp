@@ -461,7 +461,15 @@ void Viewer::DrawOnlineEvent()
     for(auto &i: data)
         mData[i.first] = i.second;
 
-    drawRawHistos_impl(mData);
+    if(mData.size() <= 0) {
+	    // print a log 
+	    std::string ss("total apv in current event: ");
+	    ss = ss + std::to_string(mData.size()) + "\n";
+	    pLogBox -> textCursor().insertText(ss.c_str());
+	    pLogBox -> verticalScrollBar()->setValue(pLogBox->verticalScrollBar()->maximum());
+    }
+    else
+	    drawRawHistos_impl(mData);
 }
 
 ////////////////////////////////////////////////////////////////
