@@ -53,7 +53,6 @@ HEADERS += include/EvioFileReader.h \
            include/HistoItem.h \
            include/HistoView.h \
            include/HistoWidget.h \
-           include/GEMReplay.h \
            include/APVStripMapping.h \
            include/GEMStruct.h \
            include/ConfigSetup.h \
@@ -74,7 +73,6 @@ SOURCES += src/EvioFileReader.cpp \
            src/HistoItem.cpp \
            src/HistoView.cpp \
            src/HistoWidget.cpp \
-           src/GEMReplay.cpp \
            src/APVStripMapping.cpp \
            src/SRSRawEventDecoder.cpp \
            src/GEMPedestal.cpp \

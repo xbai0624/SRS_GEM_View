@@ -37,7 +37,7 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = gem_view_srs1.0.0
-DISTDIR = /home/daq/data_viewer/SRS_GEM_View/obj/gem_view_srs1.0.0
+DISTDIR = /home/xinzhan/test/SRS/SRS_GEM_View/obj/gem_view_srs1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-O1
 LIBS          = $(SUBLIBS) -L${CODA}/Linux-x86_64/lib -levio -let -L${ROOTSYS}/lib -lCore -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lTree -lRint -lPostscript -lMatrix -lPhysics -lGui -lRGL /usr/lib64/libQt5Widgets.so /usr/lib64/libQt5Gui.so /usr/lib64/libQt5Core.so -lGL -lpthread   
@@ -64,7 +64,6 @@ SOURCES       = src/EvioFileReader.cpp \
 		src/HistoItem.cpp \
 		src/HistoView.cpp \
 		src/HistoWidget.cpp \
-		src/GEMReplay.cpp \
 		src/APVStripMapping.cpp \
 		src/SRSRawEventDecoder.cpp \
 		src/GEMPedestal.cpp \
@@ -84,7 +83,6 @@ OBJECTS       = obj/EvioFileReader.o \
 		obj/HistoItem.o \
 		obj/HistoView.o \
 		obj/HistoWidget.o \
-		obj/GEMReplay.o \
 		obj/APVStripMapping.o \
 		obj/SRSRawEventDecoder.o \
 		obj/GEMPedestal.o \
@@ -183,7 +181,6 @@ DIST          = /../lib64/qt5/mkspecs/features/spec_pre.prf \
 		include/HistoItem.h \
 		include/HistoView.h \
 		include/HistoWidget.h \
-		include/GEMReplay.h \
 		include/APVStripMapping.h \
 		include/GEMStruct.h \
 		include/ConfigSetup.h \
@@ -202,7 +199,6 @@ DIST          = /../lib64/qt5/mkspecs/features/spec_pre.prf \
 		src/HistoItem.cpp \
 		src/HistoView.cpp \
 		src/HistoWidget.cpp \
-		src/GEMReplay.cpp \
 		src/APVStripMapping.cpp \
 		src/SRSRawEventDecoder.cpp \
 		src/GEMPedestal.cpp \
@@ -389,8 +385,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /../lib64/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents include/EvioFileReader.h include/EventParser.h include/GeneralEvioStruct.h include/MPDVMERawEventDecoder.h include/MPDSSPRawEventDecoder.h include/RolStruct.h include/MPDDataStruct.h include/AbstractRawDecoder.h include/sspApvdec.h include/Viewer.h include/Analyzer.h include/HistoItem.h include/HistoView.h include/HistoWidget.h include/GEMReplay.h include/APVStripMapping.h include/GEMStruct.h include/ConfigSetup.h include/SRSRawEventDecoder.h include/GEMPedestal.h include/ETViewer.h include/ETChannel.h $(DISTDIR)/
-	$(COPY_FILE) --parents src/EvioFileReader.cpp src/EventParser.cpp src/MPDVMERawEventDecoder.cpp src/MPDSSPRawEventDecoder.cpp src/AbstractRawDecoder.cpp src/MPDDataStruct.cpp src/main.cpp src/Viewer.cpp src/Analyzer.cpp src/HistoItem.cpp src/HistoView.cpp src/HistoWidget.cpp src/GEMReplay.cpp src/APVStripMapping.cpp src/SRSRawEventDecoder.cpp src/GEMPedestal.cpp src/ETViewer.cpp src/ETChannel.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents include/EvioFileReader.h include/EventParser.h include/GeneralEvioStruct.h include/MPDVMERawEventDecoder.h include/MPDSSPRawEventDecoder.h include/RolStruct.h include/MPDDataStruct.h include/AbstractRawDecoder.h include/sspApvdec.h include/Viewer.h include/Analyzer.h include/HistoItem.h include/HistoView.h include/HistoWidget.h include/APVStripMapping.h include/GEMStruct.h include/ConfigSetup.h include/SRSRawEventDecoder.h include/GEMPedestal.h include/ETViewer.h include/ETChannel.h $(DISTDIR)/
+	$(COPY_FILE) --parents src/EvioFileReader.cpp src/EventParser.cpp src/MPDVMERawEventDecoder.cpp src/MPDSSPRawEventDecoder.cpp src/AbstractRawDecoder.cpp src/MPDDataStruct.cpp src/main.cpp src/Viewer.cpp src/Analyzer.cpp src/HistoItem.cpp src/HistoView.cpp src/HistoWidget.cpp src/APVStripMapping.cpp src/SRSRawEventDecoder.cpp src/GEMPedestal.cpp src/ETViewer.cpp src/ETChannel.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -436,7 +432,6 @@ moc/moc_Viewer.cpp: include/Viewer.h \
 		include/RolStruct.h \
 		include/MPDSSPRawEventDecoder.h \
 		include/SRSRawEventDecoder.h \
-		include/GEMReplay.h \
 		include/APVStripMapping.h \
 		include/GEMStruct.h \
 		include/HistoWidget.h \
@@ -446,7 +441,7 @@ moc/moc_Viewer.cpp: include/Viewer.h \
 		include/ETViewer.h \
 		moc/moc_predefs.h \
 		/../lib64/qt5/bin/moc
-	/../lib64/qt5/bin/moc $(DEFINES) --include /home/daq/data_viewer/SRS_GEM_View/moc/moc_predefs.h -I/../lib64/qt5/mkspecs/linux-g++ -I/home/daq/data_viewer/SRS_GEM_View -I/home/daq/data_viewer/SRS_GEM_View -I/home/daq/data_viewer/SRS_GEM_View/include -I'/home/daq/data_viewer/SRS_GEM_View/${CODA}/common/include' -I'/home/daq/data_viewer/SRS_GEM_View/${ROOTSYS}/include' -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtCore -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include include/Viewer.h -o moc/moc_Viewer.cpp
+	/../lib64/qt5/bin/moc $(DEFINES) --include /home/xinzhan/test/SRS/SRS_GEM_View/moc/moc_predefs.h -I/../lib64/qt5/mkspecs/linux-g++ -I/home/xinzhan/test/SRS/SRS_GEM_View -I/home/xinzhan/test/SRS/SRS_GEM_View -I/home/xinzhan/test/SRS/SRS_GEM_View/include -I'/home/xinzhan/test/SRS/SRS_GEM_View/${CODA}/common/include' -I'/home/xinzhan/test/SRS/SRS_GEM_View/${ROOTSYS}/include' -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtCore -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include include/Viewer.h -o moc/moc_Viewer.cpp
 
 moc/moc_HistoWidget.cpp: include/HistoWidget.h \
 		include/HistoView.h \
@@ -455,7 +450,7 @@ moc/moc_HistoWidget.cpp: include/HistoWidget.h \
 		include/MPDDataStruct.h \
 		moc/moc_predefs.h \
 		/../lib64/qt5/bin/moc
-	/../lib64/qt5/bin/moc $(DEFINES) --include /home/daq/data_viewer/SRS_GEM_View/moc/moc_predefs.h -I/../lib64/qt5/mkspecs/linux-g++ -I/home/daq/data_viewer/SRS_GEM_View -I/home/daq/data_viewer/SRS_GEM_View -I/home/daq/data_viewer/SRS_GEM_View/include -I'/home/daq/data_viewer/SRS_GEM_View/${CODA}/common/include' -I'/home/daq/data_viewer/SRS_GEM_View/${ROOTSYS}/include' -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtCore -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include include/HistoWidget.h -o moc/moc_HistoWidget.cpp
+	/../lib64/qt5/bin/moc $(DEFINES) --include /home/xinzhan/test/SRS/SRS_GEM_View/moc/moc_predefs.h -I/../lib64/qt5/mkspecs/linux-g++ -I/home/xinzhan/test/SRS/SRS_GEM_View -I/home/xinzhan/test/SRS/SRS_GEM_View -I/home/xinzhan/test/SRS/SRS_GEM_View/include -I'/home/xinzhan/test/SRS/SRS_GEM_View/${CODA}/common/include' -I'/home/xinzhan/test/SRS/SRS_GEM_View/${ROOTSYS}/include' -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtCore -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include include/HistoWidget.h -o moc/moc_HistoWidget.cpp
 
 moc/moc_ETViewer.cpp: include/ETViewer.h \
 		include/MPDDataStruct.h \
@@ -465,7 +460,7 @@ moc/moc_ETViewer.cpp: include/ETViewer.h \
 		include/SRSRawEventDecoder.h \
 		moc/moc_predefs.h \
 		/../lib64/qt5/bin/moc
-	/../lib64/qt5/bin/moc $(DEFINES) --include /home/daq/data_viewer/SRS_GEM_View/moc/moc_predefs.h -I/../lib64/qt5/mkspecs/linux-g++ -I/home/daq/data_viewer/SRS_GEM_View -I/home/daq/data_viewer/SRS_GEM_View -I/home/daq/data_viewer/SRS_GEM_View/include -I'/home/daq/data_viewer/SRS_GEM_View/${CODA}/common/include' -I'/home/daq/data_viewer/SRS_GEM_View/${ROOTSYS}/include' -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtCore -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include include/ETViewer.h -o moc/moc_ETViewer.cpp
+	/../lib64/qt5/bin/moc $(DEFINES) --include /home/xinzhan/test/SRS/SRS_GEM_View/moc/moc_predefs.h -I/../lib64/qt5/mkspecs/linux-g++ -I/home/xinzhan/test/SRS/SRS_GEM_View -I/home/xinzhan/test/SRS/SRS_GEM_View -I/home/xinzhan/test/SRS/SRS_GEM_View/include -I'/home/xinzhan/test/SRS/SRS_GEM_View/${CODA}/common/include' -I'/home/xinzhan/test/SRS/SRS_GEM_View/${ROOTSYS}/include' -I/usr/include/qt5 -I/usr/include/qt5/QtWidgets -I/usr/include/qt5/QtGui -I/usr/include/qt5/QtCore -I/usr/include/c++/4.8.5 -I/usr/include/c++/4.8.5/x86_64-redhat-linux -I/usr/include/c++/4.8.5/backward -I/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include -I/usr/local/include -I/usr/include include/ETViewer.h -o moc/moc_ETViewer.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -523,7 +518,6 @@ obj/main.o: src/main.cpp include/Viewer.h \
 		include/RolStruct.h \
 		include/MPDSSPRawEventDecoder.h \
 		include/SRSRawEventDecoder.h \
-		include/GEMReplay.h \
 		include/APVStripMapping.h \
 		include/GEMStruct.h \
 		include/HistoWidget.h \
@@ -544,7 +538,6 @@ obj/Viewer.o: src/Viewer.cpp include/Viewer.h \
 		include/RolStruct.h \
 		include/MPDSSPRawEventDecoder.h \
 		include/SRSRawEventDecoder.h \
-		include/GEMReplay.h \
 		include/APVStripMapping.h \
 		include/GEMStruct.h \
 		include/HistoWidget.h \
@@ -581,9 +574,6 @@ obj/HistoWidget.o: src/HistoWidget.cpp include/HistoWidget.h \
 		include/ConfigSetup.h \
 		include/MPDDataStruct.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/HistoWidget.o src/HistoWidget.cpp
-
-obj/GEMReplay.o: src/GEMReplay.cpp include/GEMReplay.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/GEMReplay.o src/GEMReplay.cpp
 
 obj/APVStripMapping.o: src/APVStripMapping.cpp include/APVStripMapping.h \
 		include/GEMStruct.h \
@@ -623,7 +613,6 @@ obj/ETViewer.o: src/ETViewer.cpp include/ETViewer.h \
 		include/EvioFileReader.h \
 		include/MPDVMERawEventDecoder.h \
 		include/MPDSSPRawEventDecoder.h \
-		include/GEMReplay.h \
 		include/APVStripMapping.h \
 		include/GEMStruct.h \
 		include/HistoWidget.h \

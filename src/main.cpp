@@ -16,7 +16,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     //TApplication root_app("root", &argc, argv);
 
     Viewer *viewer = new Viewer();
-    viewer -> resize(1100, 800);
+    viewer -> resize(1200, 700);
     viewer -> show();
 
     QObject::connect(qApp, SIGNAL(lastWindowClosed()), qApp, SLOT(quit()));

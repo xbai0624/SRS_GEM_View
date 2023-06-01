@@ -155,11 +155,15 @@ void Viewer::InitCtrlInterface()
     timer = new QTimer(this);
     layout -> addWidget(et_viewer);
 
+    // 4) pause ET timer event
+    btn_pause_et = new QPushButton("&Pause ET", pRightCtrlInterface);
+    layout -> addWidget(btn_pause_et);
+
     // a file path input window
     QHBoxLayout *_layout1 = new QHBoxLayout();
     QLabel *l1 = new QLabel("File:", pRightCtrlInterface);
     file_indicator = new QLineEdit(pRightCtrlInterface);
-    QPushButton *bOpenFile = new QPushButton("&Choose File", pRightCtrlInterface);
+    QPushButton *bOpenFile = new QPushButton("&Open File", pRightCtrlInterface);
     file_indicator -> setText("data/gem_cleanroom_1440.evio.0");
     _layout1 -> addWidget(l1);
     _layout1 -> addWidget(file_indicator);
@@ -178,9 +182,9 @@ void Viewer::InitCtrlInterface()
     // 1) max event for pedestal
     QLabel *l_num = new QLabel("Max events for pedestal: ", pRightCtrlInterface);
     QLineEdit *le_num = new QLineEdit(pRightCtrlInterface);
-    le_num -> setText("3000");
+    le_num -> setText("5000");
     // 2) output path
-    QLabel *l_path = new QLabel("Pedestal text File Output Path: ", pRightCtrlInterface);
+    QLabel *l_path = new QLabel("Pedestal File Output Path: ", pRightCtrlInterface);
     QLineEdit *le_path = new QLineEdit(pRightCtrlInterface);
     le_path -> setText("database/gem_ped.root");
     // 3) generate
@@ -193,33 +197,13 @@ void Viewer::InitCtrlInterface()
     _layout3 -> addWidget(l3, 2, 0);
     _layout3 -> addWidget(b, 2, 1);
 
-    // function moudles for replaying evio file to root files
-    QGridLayout *_layout4 = new QGridLayout();
-    QLabel *l_replay = new QLabel("Replay File Output Path:", pRightCtrlInterface);
-    QLineEdit *le_replay = new QLineEdit(pRightCtrlInterface);
-    le_replay -> setText("./gem_replay.root");
-    QLabel *l_split = new QLabel("Max File Split", pRightCtrlInterface);
-    QLineEdit *le_split = new QLineEdit(pRightCtrlInterface);
-    le_split -> setText("-1");
-    QLabel *l4 = new QLabel("Replay to ROOT file: ", pRightCtrlInterface);
-    QPushButton *b4 = new QPushButton("&Replay", pRightCtrlInterface);
-    _layout4 -> addWidget(l_replay, 0, 0);
-    _layout4 -> addWidget(le_replay, 0, 1);
-    _layout4 -> addWidget(l_split, 1, 0);
-    _layout4 -> addWidget(le_split, 1, 1);
-    _layout4 -> addWidget(l4, 2, 0);
-    _layout4 -> addWidget(b4, 2, 1);
-
     minimum_qt_unit_height(l1, file_indicator, bOpenFile, l2,  event_number,
-		    l_num, le_num, l_path, le_path, l3, b,
-		    l_replay, le_replay,
-		    l_replay, le_replay, l4, b4);
+		    l_num, le_num, l_path, le_path, l3, b, btn_pause_et);
 
     // add to overall layout
     layout -> addLayout(_layout1);
     layout -> addLayout(_layout2);
     layout -> addLayout(_layout3);
-    layout -> addLayout(_layout4);
 
     // connect
     connect(file_indicator, SIGNAL(textChanged(const QString &)), this, SLOT(SetFile(const QString &)));
@@ -228,13 +212,12 @@ void Viewer::InitCtrlInterface()
     connect(b, SIGNAL(pressed()), this, SLOT(GeneratePedestal_obsolete()));
     connect(le_path, SIGNAL(textChanged(const QString &)), this, SLOT(SetPedestalOutputPath(const QString &)));
     connect(le_num, SIGNAL(textChanged(const QString &)), this, SLOT(SetPedestalMaxEvents(const QString &)));
-    connect(le_replay, SIGNAL(textChanged(const QString &)), this, SLOT(SetRootFileOutputPath(const QString &)));
-    connect(le_split, SIGNAL(textChanged(const QString &)), this, SLOT(SetFileSplit(const QString &)));
-    connect(b4, SIGNAL(pressed()), this, SLOT(Replay()));
 
     // timer
     connect(timer, SIGNAL(timeout()), this, SLOT(DrawOnlineEvent()));
     timer -> start(5000);
+
+    connect(btn_pause_et, SIGNAL(pressed()), this, SLOT(PauseTimer()));
 }
  
 ////////////////////////////////////////////////////////////////
@@ -335,8 +318,6 @@ void Viewer::InitAnalyzer()
     pAnalyzer = new Analyzer();
     pAnalyzer -> SetFile(fFile.c_str());
     //pAnalyzer -> Init();
-
-    pGEMReplay = new GEMReplay();
 }
 
 ////////////////////////////////////////////////////////////////
@@ -509,25 +490,6 @@ void Viewer::SetPedestalOutputPath(const QString &s)
 }
 
 ////////////////////////////////////////////////////////////////
-// set root file output path
-
-void Viewer::SetRootFileOutputPath(const QString &s)
-{
-    fRootFileSavePath = s.toStdString();
-}
-
-////////////////////////////////////////////////////////////////
-// set input file split
-
-void Viewer::SetFileSplit(const QString &s)
-{
-    std::string ss = s.toStdString();
-    int i = std::stoi(ss);
-
-    fFileSplit = i;
-}
-
-////////////////////////////////////////////////////////////////
 // set pedestal max events
 
 void Viewer::SetPedestalMaxEvents(const QString & s)
@@ -580,83 +542,6 @@ void Viewer::GeneratePedestal_obsolete()
 }
 
 ////////////////////////////////////////////////////////////////
-// generate pedestal
-
-void Viewer::GeneratePedestal()
-{
-    QMessageBox::information(
-            this,
-            tr("GEM Data Viewer"),
-            tr("Generating Pedestals usually takes a while... \
-                \nPress OK to start...") );
-
-    pLogBox -> setTextColor(QColor("blue"));
-    pLogBox -> textCursor().insertText("\ngenerating pedestal for file: \"");
-    pLogBox -> textCursor().insertText(fFile.c_str());
-    pLogBox -> textCursor().insertText("\"\nthis might take a while...\n");
-    pLogBox -> verticalScrollBar()->setValue(pLogBox->verticalScrollBar()->maximum());
-    QCoreApplication::processEvents();
-
-    pGEMReplay -> SetInputFile(fFile);
-    pGEMReplay -> SetOutputFile(fPedestalSavePath);
-#ifndef USE_THREAD
-    pGEMReplay -> GeneratePedestal();
-#else
-    //std::thread th([&]() {
-    //        pGEMReplay -> GeneratePedestal();
-    //        }
-    //        );
-    //th.join();
-#endif
-    QMessageBox::information(
-            this,
-            tr("GEM Data Viewer"),
-            tr("Pedestal Done!") );
-
-    pLogBox -> setTextColor(QColor("black"));
-    pLogBox -> textCursor().insertText("Done.\n");
-}
-
-////////////////////////////////////////////////////////////////
-// replay
-
-void Viewer::Replay()
-{
-    QMessageBox::information(
-            this,
-            tr("GEM Data Viewer"),
-            tr("Replay files usually takes a while... \
-                \nPress OK to start...") );
-
-    pLogBox -> setTextColor(QColor("blue"));
-    pLogBox -> textCursor().insertText("\nReplaying for file: \"");
-    pLogBox -> textCursor().insertText(fFile.c_str());
-    pLogBox -> textCursor().insertText("\"\nthis might take a while...\n");
-    pLogBox -> verticalScrollBar()->setValue(pLogBox->verticalScrollBar()->maximum());
-    QCoreApplication::processEvents();
-
-    pGEMReplay -> SetInputFile(fFile);
-    pGEMReplay -> SetOutputFile(fRootFileSavePath);
-    pGEMReplay -> SetSplit(fFileSplit);
-#ifndef USE_THREAD
-    pGEMReplay -> Replay();
-#else
-    //std::thread th([&]() {
-    //        pGEMReplay -> Replay();
-    //        }
-    //        );
-    //th.join();
-#endif
-    QMessageBox::information(
-            this,
-            tr("GEM Data Viewer"),
-            tr("Replay Done!") );
-
-    pLogBox -> setTextColor(QColor("black"));
-    pLogBox -> textCursor().insertText("Done.\n");
-}
-
-////////////////////////////////////////////////////////////////
 // replay
 
 void Viewer::SetPollingETTimeInterval(int t)
@@ -664,3 +549,29 @@ void Viewer::SetPollingETTimeInterval(int t)
     int time = t * 1000; // convert to mili seconds
     timer -> start(time);
 }
+
+////////////////////////////////////////////////////////////////
+// replay
+
+void Viewer::PauseTimer()
+{
+    if(is_paused) {
+        int time = 5 * 1000; // convert to mili seconds
+        timer -> start(time);
+
+        if(btn_pause_et)
+            btn_pause_et -> setText("Pause ET");
+
+        is_paused = false;
+    }
+    else {
+        timer -> stop();
+
+        if(btn_pause_et)
+            btn_pause_et -> setText("Resume ET");
+
+        is_paused = true;
+    }
+}
+
+

@@ -2,7 +2,6 @@
 #define VIEWER_H
 
 #include "Analyzer.h"
-#include "GEMReplay.h"
 #include "APVStripMapping.h"
 #include "HistoWidget.h"
 #include "ETViewer.h"
@@ -56,8 +55,6 @@ public:
 
 public slots:
     void SetFile(const QString &);
-    void SetFileSplit(const QString &);
-    void SetRootFileOutputPath(const QString &);
     void SetPedestalOutputPath(const QString &);
     void SetPedestalMaxEvents(const QString &);
     void DrawOfflineEvent(int);
@@ -66,8 +63,7 @@ public slots:
     void DrawOnlineEvent();
     void OpenFile();
     void GeneratePedestal_obsolete();
-    void GeneratePedestal();
-    void Replay();
+    void PauseTimer();
 
 private:
     // layout
@@ -105,14 +101,13 @@ private:
     std::string fPedestalSavePath = "database/gem_ped.root";
     uint32_t fPedestalMaxEvents = 3000;
 
-    // gem replay
-    GEMReplay *pGEMReplay;
-    std::string fRootFileSavePath = "./gem_replay.root";
-    int fFileSplit = -1;
-
     // section for ET viewer
     ETViewer* et_viewer;
     QTimer *timer;
+
+    // pause ET event timer
+    bool is_paused = false;
+    QPushButton *btn_pause_et;
 
 private:
     // section for viewer status
