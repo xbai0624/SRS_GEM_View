@@ -453,6 +453,7 @@ void Viewer::DrawOnlineEvent()
 	    pLogBox -> verticalScrollBar()->setValue(pLogBox->verticalScrollBar()->maximum());
     }
     else {
+        online_event_back_counter = 0; // reset counter
         event_cache.push_back(mData);
 	    drawRawHistos_impl(mData);
     }
@@ -466,7 +467,10 @@ void Viewer::DrawPrevOnlineEvent()
     if(event_cache.size() <= 0)
         return;
 
-    drawRawHistos_impl(event_cache.back());
+    online_event_back_counter++;
+    int index = event_cache.size() -1 - online_event_back_counter;
+
+    drawRawHistos_impl(event_cache.at(index));
 }
 
 ////////////////////////////////////////////////////////////////

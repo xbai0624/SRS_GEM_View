@@ -110,6 +110,7 @@ private:
     // pause ET event timer
     bool is_paused = false;
     QPushButton *btn_pause_et;
+    int online_event_back_counter = 0;
 
 private:
     // section for viewer status
