@@ -169,7 +169,7 @@ void Viewer::InitCtrlInterface()
     QHBoxLayout *_layout2 = new QHBoxLayout();
     QLabel *l2 = new QLabel("Event Number: ", pRightCtrlInterface);
     QSpinBox *event_number = new QSpinBox(pRightCtrlInterface);
-    event_number -> setRange(0, 9999);
+    event_number -> setRange(0, 99999999);
     _layout2 -> addWidget(l2);
     _layout2 -> addWidget(event_number);
 

@@ -117,7 +117,7 @@ private:
 private:
     // section for viewer status
     int event_number_checked = 0;
-    size_t max_cache_events = 11;
+    size_t max_cache_events = 1e6;
     std::deque<std::map<APVAddress, std::vector<int>>> event_cache;
 
 public:
