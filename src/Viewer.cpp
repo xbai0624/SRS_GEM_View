@@ -199,7 +199,7 @@ void Viewer::InitCtrlInterface()
     _layout3 -> addWidget(b, 2, 1);
 
     minimum_qt_unit_height(file_indicator, bOpenFile, l2,  event_number,
-		    l_num, le_num, l_path, le_path, l3, b, btn_pause_et);
+		    l_num, le_num, l_path, le_path, l3, b, btn_pause_et, btn_prev_et_event);
 
     // add to overall layout
     layout -> addLayout(et_btn_layout);
@@ -468,9 +468,10 @@ void Viewer::DrawPrevOnlineEvent()
         return;
 
     online_event_back_counter++;
-    int index = event_cache.size() -1 - online_event_back_counter;
+    int index = (int)event_cache.size() -1 - online_event_back_counter;
 
-    drawRawHistos_impl(event_cache.at(index));
+    if(index >= 0)
+        drawRawHistos_impl(event_cache.at(index));
 }
 
 ////////////////////////////////////////////////////////////////
