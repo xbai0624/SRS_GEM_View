@@ -36,7 +36,7 @@ public:
     std::string GetHostIPAddress() {return host_ip_address;}
     std::string GetHostPort() {return host_port;}
     std::string GetMemoryMappedFile(){return memory_mapped_file;}
-    int GetPollTimeInterval() {return poll_time_interval;}
+    double GetPollTimeInterval() {return poll_time_interval;}
 
     void ConnectActions();
 
@@ -65,7 +65,7 @@ private:
     std::string host_ip_address = "127.0.0.1";
     std::string host_port = "23911";
     std::string memory_mapped_file = "/tmp/et_fermitest_ER1";
-    int poll_time_interval = 1; // seconds
+    double poll_time_interval = 5; // seconds
 
     // layout
     QVBoxLayout *layout;

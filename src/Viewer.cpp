@@ -155,19 +155,20 @@ void Viewer::InitCtrlInterface()
     timer = new QTimer(this);
     layout -> addWidget(et_viewer);
 
-    // 4) pause ET timer event
+    // pause ET timer event
     btn_pause_et = new QPushButton("&Pause ET", pRightCtrlInterface);
-    layout -> addWidget(btn_pause_et);
+    QPushButton *btn_prev_et_event = new QPushButton("P&rev ET Event", pRightCtrlInterface);
+    QHBoxLayout *et_btn_layout = new QHBoxLayout();
+    et_btn_layout -> addWidget(btn_prev_et_event);
+    et_btn_layout -> addWidget(btn_pause_et);
 
     // a file path input window
     QHBoxLayout *_layout1 = new QHBoxLayout();
-    QLabel *l1 = new QLabel("File:", pRightCtrlInterface);
     file_indicator = new QLineEdit(pRightCtrlInterface);
     QPushButton *bOpenFile = new QPushButton("&Open File", pRightCtrlInterface);
     file_indicator -> setText("data/gem_cleanroom_1440.evio.0");
-    _layout1 -> addWidget(l1);
-    _layout1 -> addWidget(file_indicator);
     _layout1 -> addWidget(bOpenFile);
+    _layout1 -> addWidget(file_indicator);
 
     // a event number input window
     QHBoxLayout *_layout2 = new QHBoxLayout();
@@ -197,10 +198,11 @@ void Viewer::InitCtrlInterface()
     _layout3 -> addWidget(l3, 2, 0);
     _layout3 -> addWidget(b, 2, 1);
 
-    minimum_qt_unit_height(l1, file_indicator, bOpenFile, l2,  event_number,
+    minimum_qt_unit_height(file_indicator, bOpenFile, l2,  event_number,
 		    l_num, le_num, l_path, le_path, l3, b, btn_pause_et);
 
     // add to overall layout
+    layout -> addLayout(et_btn_layout);
     layout -> addLayout(_layout1);
     layout -> addLayout(_layout2);
     layout -> addLayout(_layout3);
@@ -212,6 +214,7 @@ void Viewer::InitCtrlInterface()
     connect(b, SIGNAL(pressed()), this, SLOT(GeneratePedestal_obsolete()));
     connect(le_path, SIGNAL(textChanged(const QString &)), this, SLOT(SetPedestalOutputPath(const QString &)));
     connect(le_num, SIGNAL(textChanged(const QString &)), this, SLOT(SetPedestalMaxEvents(const QString &)));
+    connect(btn_prev_et_event, SIGNAL(pressed()), this, SLOT(DrawPrevOnlineEvent()));
 
     // timer
     connect(timer, SIGNAL(timeout()), this, SLOT(DrawOnlineEvent()));
@@ -449,8 +452,21 @@ void Viewer::DrawOnlineEvent()
 	    pLogBox -> textCursor().insertText(ss.c_str());
 	    pLogBox -> verticalScrollBar()->setValue(pLogBox->verticalScrollBar()->maximum());
     }
-    else
+    else {
+        event_cache.push_back(mData);
 	    drawRawHistos_impl(mData);
+    }
+}
+
+////////////////////////////////////////////////////////////////
+// check if file exists
+
+void Viewer::DrawPrevOnlineEvent()
+{
+    if(event_cache.size() <= 0)
+        return;
+
+    drawRawHistos_impl(event_cache.back());
 }
 
 ////////////////////////////////////////////////////////////////
@@ -544,9 +560,10 @@ void Viewer::GeneratePedestal_obsolete()
 ////////////////////////////////////////////////////////////////
 // replay
 
-void Viewer::SetPollingETTimeInterval(int t)
+void Viewer::SetPollingETTimeInterval(double t)
 {
-    int time = t * 1000; // convert to mili seconds
+    polling_time = t;
+    int time = polling_time * 1000; // convert to mili seconds
     timer -> start(time);
 }
 
@@ -555,8 +572,11 @@ void Viewer::SetPollingETTimeInterval(int t)
 
 void Viewer::PauseTimer()
 {
+    if(et_viewer -> IsOfflineMode())
+        return;
+
     if(is_paused) {
-        int time = 5 * 1000; // convert to mili seconds
+        int time = polling_time * 1000; // convert to mili seconds
         timer -> start(time);
 
         if(btn_pause_et)

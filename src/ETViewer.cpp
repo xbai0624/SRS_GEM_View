@@ -10,6 +10,7 @@
 ETViewer::ETViewer(QWidget *parent) : QWidget(parent)
 {
     layout = new QVBoxLayout(this);
+    layout -> setContentsMargins(0, 0, 0, 0);
 
     ExclusiveGroup();
     layout -> addWidget(groupBox);
@@ -25,7 +26,7 @@ ETViewer::ETViewer(QWidget *parent) : QWidget(parent)
     le_port -> setEnabled(false);
     QLabel *l_time = new QLabel("Refresh Time(s):", this);
     le_time_interval = new QLineEdit(this);
-    le_time_interval -> setText("2");
+    le_time_interval -> setText("5.0");
     le_time_interval -> setEnabled(false);
     QLabel *l_mem = new QLabel("ET memory File:", this);
     le_memory_file = new QLineEdit(this);
@@ -46,6 +47,7 @@ ETViewer::ETViewer(QWidget *parent) : QWidget(parent)
     b_turn_on_et = new QPushButton("Turn On ET", this);
     b_turn_on_et -> setEnabled(false);
     b_turn_off_et = new QPushButton("Turn Off ET", this);
+    b_turn_off_et -> setToolTip("No need to turn off. You can exit the program to stop ET.");
     b_turn_off_et -> setEnabled(false); // disable turn off, coda needs et running
     // a et status indicator
     p_indicator = new QPixmap("resources/statusindicator-green.png");
@@ -214,10 +216,10 @@ std::unordered_map<APVAddress, std::vector<int>> ETViewer::GetOneETEvent()
 
 void ETViewer::SetPollTimeInterval(const QString &t)
 {
-    poll_time_interval = t.toInt();
+    poll_time_interval = t.toDouble();
 
-    // minimum polling time: 1 second
-    if(poll_time_interval < 1)
+    // minimum polling time: 1 millisecond
+    if(poll_time_interval < 0.001)
         return;
 
     if(viewer == nullptr)

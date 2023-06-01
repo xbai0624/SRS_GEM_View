@@ -51,7 +51,7 @@ public:
     void SetNumberOfTabs();
 
     // set time inveral for polling ET events
-    void SetPollingETTimeInterval(int t);
+    void SetPollingETTimeInterval(double t);
 
 public slots:
     void SetFile(const QString &);
@@ -61,6 +61,7 @@ public slots:
     void DrawOfflineGEMRawHistos(int);
     void drawRawHistos_impl(const std::map<APVAddress, std::vector<int>> &c);
     void DrawOnlineEvent();
+    void DrawPrevOnlineEvent();
     void OpenFile();
     void GeneratePedestal_obsolete();
     void PauseTimer();
@@ -104,6 +105,7 @@ private:
     // section for ET viewer
     ETViewer* et_viewer;
     QTimer *timer;
+    double polling_time = 5;
 
     // pause ET event timer
     bool is_paused = false;
