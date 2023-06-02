@@ -3,7 +3,7 @@
  */
 
 #include <QApplication>
-//#include <TApplication.h>
+#include <QFile>
 
 #include "Viewer.h"
 
@@ -13,7 +13,14 @@
 int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 {
     QApplication app(argc, argv);
-    //TApplication root_app("root", &argc, argv);
+
+    // load a style
+    // see: https://stackoverflow.com/questions/4810729/qt-setstylesheet-from-a-resource-qss-file
+    // and https://github.com/GTRONICK/QSS
+    QFile styleFile("./third_party/style/MacOS.qss");
+    styleFile.open(QFile::ReadOnly);
+    QString style(styleFile.readAll());
+    app.setStyleSheet(style);
 
     Viewer *viewer = new Viewer();
     viewer -> resize(1200, 700);
